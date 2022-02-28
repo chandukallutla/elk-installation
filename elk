@@ -1,0 +1,76 @@
+#elastic search logstash kibana
+
+#update 
+sudo apt-get update -y
+#Install JDK on Ubuntu
+sudo apt-get install openjdk-11-jdk wget apt-transport-https curl gnupg2 -y
+java -version
+
+# Install and Configure Elasticsearch on Ubuntu
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch --no-check-certificate | sudo apt-key add -
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+sudo apt-get update -y
+sudo apt-get install elasticsearch -y
+vi /etc/elasticsearch/elasticsearch.yml
+
+
+##########If u can change the  line number 56,61 : network.host: 0.0.0.0,61 http.port: 9200
+##########Line number:71 u can add discovery.type: single-node 
+#start elasticsearch
+sudo systemctl start elasticsearch
+#enable elastic search
+sudo systemctl enable elasticsearch
+#status elastic search
+sudo systemctl status elasticsearch
+#restart elastic search
+sudo systemctl restart elasticsearch
+ps -ef | grep -i elasticsearch
+netstat -anlp | grep -i "3007"
+apt install net-tools -y
+curl -X GET "0.0.0.0:9200"
+
+
+
+###############Install and Configure Logstash on Ubuntu:################
+#install logstash
+sudo apt-get install logstash
+#add inputs
+sudo vi /etc/logstash/conf.d/02-beats-input.conf
+    input {
+beats {
+port => 5044
+}
+}
+#start logstash
+sudo systemctl start logstash
+#status logstash
+sudo systemctl status logstash
+#enable logstash
+sudo systemctl enable logstash
+#restart logstash
+sudo systemctl restart logstash
+
+
+
+
+#Install and Configure Kibana on Ubuntu
+
+sudo apt-get install kibana
+sudo vi /etc/kibana/kibana.yml
+sudo systemctl start kibana
+sudo systemctl enable kibana
+sudo systemctl status kibana
+sudo systemctl restart kibana
+
+
+#Install and Configure Filebeat on Ubuntu
+sudo apt-get install filebeat
+sudo systemctl start filebeat
+sudo vi /etc/filebeat/filebeat.yml
+    line 134: 
+
+
+sudo systemctl enable filebeat
+sudo systemctl start filebeat
+sudo systemctl restart filebeat
+sudo filebeat modules enable system
